@@ -6,6 +6,35 @@ function Item(props) {
   )
 }
 
+// React Composition
+function Toolbar(props) {
+    return (
+        <div style={{background: 'cyan', padding: 10}}>
+            {props.children}
+        </div>
+    );
+}
+
+function Logo(props) {
+    return (
+        <img style={{width: '50px', height: '50px', borderRadius: '100%'}} src={props.image}></img>
+    )
+}
+
+function Title(props) {
+    return ( 
+        <div style={{background: 'lightyellow', padding: 8}}>
+            {props.children}
+        </div>
+    )
+}
+
+function MenuItem(props) {
+    return (
+        <li>{props.value}</li>
+    )
+}
+
 function AddForm(props) {
     const nameRef = useRef();
     const priceRef = useRef();
@@ -45,7 +74,22 @@ export default function App() {
 
     return (
         <div>
-            <h1>Hello React</h1>
+            <div>
+                <Toolbar>
+                    <h1 style={{display: 'flex',alignItems: 'center', gap: '10px'}}>Hello React
+                        <Logo image={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbAmafdPNr9fd0KC0Z98WYEC7Wl1wYlPVf-A&s"}></Logo>
+                    </h1>
+                </Toolbar>
+                <Title>
+                    <header>App Title (React)</header>
+
+                    <ul>
+                        <MenuItem value="Home"></MenuItem>
+                        <MenuItem value="Users"></MenuItem>
+                    </ul>
+                </Title>
+                
+            </div>
             <ul>
               {data.map( i => (
                 <Item key={i.id} name={i.name} price={i.price}></Item>
