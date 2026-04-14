@@ -1,4 +1,5 @@
 import {useRef, useState} from 'react';
+import Toolbar from './Toolbar';
 
 function Item(props) {
   return ( 
@@ -7,13 +8,6 @@ function Item(props) {
 }
 
 // React Composition
-function Toolbar(props) {
-    return (
-        <div style={{background: 'cyan', padding: 10}}>
-            {props.children}
-        </div>
-    );
-}
 
 function Logo(props) {
     return (
