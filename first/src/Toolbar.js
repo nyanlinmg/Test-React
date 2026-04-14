@@ -1,7 +1,8 @@
+import './Toolbar.css'
 
 export default function Toolbar(props) {
     return (
-        <div style={{background: 'cyan', padding: 10}}>
+        <div className="toolbar">
             {props.children}
         </div>
     )
