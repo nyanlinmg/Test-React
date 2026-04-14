@@ -58,6 +58,18 @@ export default function App() {
         {id : 2, name : "Orange", price : 0.88}
     ]);
 
+    const styles = {
+        toolbar: {
+            marginBottom : 20,
+            border: '2px solid black',
+        },
+        dark: {
+            background: 'gray',
+            color: 'white',
+            padding: '10px 40px'
+        }
+    }
+
     const add = (name, price) => {
         const id = data.length + 1;
         setData([
@@ -84,7 +96,7 @@ export default function App() {
                 </Title>
                 
             </div>
-            <ul>
+            <ul style={{...styles.dark, ...styles.toolbar}}>
               {data.map( i => (
                 <Item key={i.id} name={i.name} price={i.price}></Item>
               ))}
