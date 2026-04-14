@@ -1,5 +1,6 @@
 import {useRef, useState} from 'react';
 import Toolbar from './Toolbar';
+import {createContext, useContext} from 'react';
 
 function Item(props) {
   return ( 
@@ -78,8 +79,21 @@ export default function App() {
         ]);
     }
 
+    const [theme , setTheme ] = useState("light");
+
     return (
         <div>
+            <ThemeContext.Provider value={{ theme, setTheme }}>
+                <div style={{
+                    minHeight: 100,
+                    color: "green",
+                    padding: 20,
+                    background:
+                        theme === "light" ? "lightblue" : "darkblue"
+                }}>
+                    <Header2></Header2>
+                </div>
+            </ThemeContext.Provider>
             <div>
                 <Toolbar>
                     <h1 style={{display: 'flex',alignItems: 'center', gap: '10px'}}>Hello React
@@ -97,12 +111,38 @@ export default function App() {
                 
             </div>
             <ul style={{...styles.dark, ...styles.toolbar}}>
-              {data.map( i => (
-                <Item key={i.id} name={i.name} price={i.price}></Item>
-              ))}
-          </ul>
+                {data.map( i => (
+                    <Item key={i.id} name={i.name} price={i.price}></Item>
+                ))}
+            </ul>
 
-          <AddForm add={add} />
+            <AddForm add={add} />
+        </div>
+    )
+}
+
+// React Context
+
+const MyContext = createContext();
+const ThemeContext = createContext();
+
+function Header2(props){
+    return <Title2></Title2>
+}
+
+function Title2(props) {
+    const { theme, setTheme } = useContext(ThemeContext);
+
+    return (
+        <div>
+            <h1>Hello Context</h1>
+            <button onClick={ () => {
+                setTheme(
+                    theme === "light" ? "dark" : "light"
+                )
+            }}>
+                Toggle Theme
+            </button>
         </div>
     )
 }
