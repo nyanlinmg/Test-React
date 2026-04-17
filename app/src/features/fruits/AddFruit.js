@@ -8,6 +8,7 @@ export default function NewFruit() {
 
     const fruits = useSelector(selectFruits);
     const dispatch = useDispatch();
+    const id = fruits.length + 1;
 
     return (
         <form style={{
@@ -16,7 +17,7 @@ export default function NewFruit() {
             e.preventDefault();
 
             dispatch(add({
-                id: fruits[fruits.length - 1].id + 1,
+                id: id,
                 name: nameRef.current.value,
                 price: priceRef.current.value
             }))
