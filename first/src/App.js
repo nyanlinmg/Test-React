@@ -1,148 +1,63 @@
 import {useRef, useState} from 'react';
 import Toolbar from './Toolbar';
 import {createContext, useContext} from 'react';
+import { Routes , Route, Link, Router, useParams, useNavigate } from 'react-router-dom';
 
-function Item(props) {
-  return ( 
-    <li>{props.name} , $ {props.price}</li>
-  )
+const users = [
+    { id: 1, name: 'Alice', gender: 'f'},
+    { id: 2, name: 'Bob', gender: 'm'},
+    { id: 3, name: 'Tom', gender: 'm'},
+    { id: 4, name: 'Mary', gender: 'f'}
+]
+
+function User() {
+    const {name} = useParams();
+    return <h1>Profile - {name}</h1>
 }
 
-// React Composition
-
-function Logo(props) {
+function Male(props) {
     return (
-        <img style={{width: '50px', height: '50px', borderRadius: '100%'}} src={props.image}></img>
+        <ul>
+            {users.filter( u => u.gender === 'm')
+                    .map( u => <li key={u.id}>{u.name}</li>)}
+        </ul>
     )
 }
 
-function Title(props) {
-    return ( 
-        <div style={{background: 'lightyellow', padding: 8}}>
-            {props.children}
-        </div>
-    )
-}
-
-function MenuItem(props) {
+function Female(props) {
     return (
-        <li>{props.value}</li>
-    )
-}
-
-function AddForm(props) {
-    const nameRef = useRef();
-    const priceRef = useRef();
-
-    return (
-        <form onSubmit={ e => {
-            e.preventDefault();
-
-            props.add(
-                nameRef.current.value,
-                priceRef.current.value
-            );
-
-        } }>
-
-            <input type='text' ref={nameRef}></input> <br />
-            <input type='text' ref={priceRef}></input> <br />
-            <button type='submit'>Add</button>
-
-        </form>
+        <ul>
+            {users.filter( u => u.gender === 'f')
+                    .map( u => <li key={u.id}>{u.name}</li>)}
+        </ul>
     )
 }
 
 export default function App() {
-    const [data, setData] = useState([
-        {id : 1, name : "Apple", price : 0.99},
-        {id : 2, name : "Orange", price : 0.88}
-    ]);
-
-    const styles = {
-        toolbar: {
-            marginBottom : 20,
-            border: '2px solid black',
-        },
-        dark: {
-            background: 'gray',
-            color: 'white',
-            padding: '10px 40px'
-        }
-    }
-
-    const add = (name, price) => {
-        const id = data.length + 1;
-        setData([
-            ...data,
-            {id, name , price}
-        ]);
-    }
-
-    const [theme , setTheme ] = useState("light");
+    const navigate = useNavigate();
 
     return (
         <div>
-            <ThemeContext.Provider value={{ theme, setTheme }}>
-                <div style={{
-                    minHeight: 100,
-                    color: "green",
-                    padding: 20,
-                    background:
-                        theme === "light" ? "lightblue" : "darkblue"
-                }}>
-                    <Header2></Header2>
-                </div>
-            </ThemeContext.Provider>
-            <div>
-                <Toolbar>
-                    <h1 style={{display: 'flex',alignItems: 'center', gap: '10px'}}>Hello React
-                        <Logo image={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbAmafdPNr9fd0KC0Z98WYEC7Wl1wYlPVf-A&s"}></Logo>
-                    </h1>
-                </Toolbar>
-                <Title>
-                    <header>App Title (React)</header>
+            <button onClick={() => navigate("/user/alice")}>Alice</button>
+            <button onClick={() => navigate("/user/bob")}>Bob</button>
 
-                    <ul>
-                        <MenuItem value="Home"></MenuItem>
-                        <MenuItem value="Users"></MenuItem>
-                    </ul>
-                </Title>
-                
+            <div style={{background: 'pink', padding: 20}}>
+                <Routes>
+                    <Route path='/user/:name' element={<User></User>}></Route>
+                </Routes>
             </div>
-            <ul style={{...styles.dark, ...styles.toolbar}}>
-                {data.map( i => (
-                    <Item key={i.id} name={i.name} price={i.price}></Item>
-                ))}
+
+            <ul>
+                <li><Link to={"/male"}>Male</Link></li>
+                <li><Link to={"/female"}>Female</Link></li>
+                <li><Link to={"/"}>back</Link></li>
             </ul>
-
-            <AddForm add={add} />
-        </div>
-    )
-}
-
-// React Context
-
-const MyContext = createContext();
-const ThemeContext = createContext();
-
-function Header2(props){
-    return <Title2></Title2>
-}
-
-function Title2(props) {
-    const { theme, setTheme } = useContext(ThemeContext);
-
-    return (
-        <div>
-            <h1>Hello Context</h1>
-            <button onClick={ () => {
-                setTheme(
-                    theme === "light" ? "dark" : "light"
-                )
-            }}>
-                Toggle Theme
-            </button>
+            <div style={{background: 'cyan', padding: 20}}>
+                <Routes>
+                    <Route path='/male' element={<Male></Male>}></Route>
+                    <Route path='/female' element={<Female></Female>}></Route>
+                </Routes>
+            </div>
         </div>
     )
 }
